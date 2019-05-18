@@ -1,0 +1,27 @@
+[producto]
+[codigo]
+111
+[nombre]
+Gygabyte b4
+[descripcion]
+Placa base de GIGABYTE serie 400 con tecnologia AMD StoreMI
+[precio]
+60.99
+[producto]
+[codigo]
+223
+[nombre]
+Kingston
+[descripcion]
+Disco duro A400 de estado solido de Kingston
+[precio]
+32.95
+[producto]
+[codigo]
+224
+[nombre]
+Lenovo
+[descripcion]
+Odenador portatil con Intel Core i5, 8GB RAM, 256GB SSD
+[precio]
+2.2
