@@ -1,13 +1,9 @@
 ----------------------------------------
 Codigo:   111
-Nombre :  marta perez
+Nombre :  Gygabyte b4
  Descripcion:  Placa base de GIGABYTE serie 400 con tecnologia AMD StoreMI
-Precio:  20.15
-Codigo:   333
-Nombre :  angeles
- Descripcion:  Odenador portatil con Intel Core i5, 8GB RAM, 256GB SSD
-Precio:  2.2
+Precio:  60.99
 ----------------------------------------
 
-El precio total de la factura es de : 22.349999999999998
-Atendio por: Sara
+El precio total de la factura es de : 60.99
+Atendio por: Mario

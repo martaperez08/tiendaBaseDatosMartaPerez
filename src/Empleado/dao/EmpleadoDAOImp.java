@@ -5,11 +5,17 @@
  */
 package Empleado.dao;
 
+import Conexion.ConexionBD;
 import Empleado.dominio.Empleado;
 import java.io.*;
 import java.nio.file.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import util.Colors;
+
 /**
  *
  * @author Marta_08
@@ -25,69 +31,40 @@ public class EmpleadoDAOImp implements EmpleadoDAO {
     @Override
     public List<Empleado> leerEmpleado() {
         List<Empleado> empleadoList = new ArrayList<>();
-        String lineaDatos;
-        try (BufferedReader lector = Files.newBufferedReader(Paths.get(archivoEmpleados))) {
-            while (lector.readLine() != null) {
-                lector.readLine();
-                lineaDatos = lector.readLine().trim();
-                int codigoEmpleado = Integer.parseInt(lineaDatos);
-                lector.readLine();
-                lineaDatos = lector.readLine().trim();
-                String nombreEmpleado = lineaDatos;
-                lector.readLine();
-                lineaDatos = lector.readLine().trim();
-                String apellidosEmpleado = lineaDatos;
-                lector.readLine();
-                lineaDatos = lector.readLine().trim();
-                String passwordEmpleado = lineaDatos;
-                empleadoList.add(new Empleado(codigoEmpleado, nombreEmpleado, apellidosEmpleado, passwordEmpleado));
+        try {
+            ConexionBD.cargarDriver();
+            Connection connection = ConexionBD.conectar();
+            ResultSet resultadoEmpleado;
+            try (Statement sentencia = connection.createStatement()) {
+                resultadoEmpleado = sentencia.executeQuery("select * FROM empleados  ");
+                while (resultadoEmpleado.next()) {
+                    int codigoEmpleado = resultadoEmpleado.getInt("e_codigo");
+                    String nombreEmpleado = resultadoEmpleado.getString("e_nombre");
+                    String apellidosEmpleado = resultadoEmpleado.getString("e_apellidos");
+                    String passwordEmpleado = resultadoEmpleado.getString("e_password");
+                    empleadoList.add(new Empleado(codigoEmpleado, nombreEmpleado, apellidosEmpleado, passwordEmpleado));
+                }
             }
-        } catch (IOException ex) {
-            System.out.println(Colors.RED+"Error archivo. " + Colors.BLACK);
-            
+            resultadoEmpleado.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return empleadoList;
     }
 
     @Override
-    public void actualizarEmpleados(List<Empleado> listEmpleado) {
-         File fichero = new File(archivoEmpleados);
-        fichero.delete();
-        try {
-            fichero.createNewFile();
-        } catch (IOException ex) {
-            System.out.println(Colors.RED+"Erros en fichero"+Colors.BLACK);;
-        }
-
-        try (BufferedWriter salida = Files.newBufferedWriter(
-                Paths.get(archivoEmpleados), StandardOpenOption.WRITE)) {
-            for (Empleado empleado : listEmpleado) {
-
-                salida.write("[empleado]");
-                salida.newLine();
-                salida.write("[codigo]");
-                salida.newLine();
-                salida.write(String.valueOf(empleado.getEmpleado_codigo()));
-                salida.newLine();
-                salida.write("[nombre]");
-                salida.newLine();
-                salida.write(empleado.getEmpleado_nombre());
-                salida.newLine();
-                salida.write("[apellidos]");
-                salida.newLine();
-                salida.write(empleado.getEmpleado_apellido());
-                salida.newLine();
-                salida.write("[contrasenya]");
-                salida.newLine();
-                salida.write(empleado.getEmpleado_password());
-                salida.newLine();
-            }
-
-        } catch (IOException ex) {
-            System.out.println(Colors.RED+"No se ha podido escribir en el archivo"+Colors.BLACK);
+    public void actualizarEmpleados(String nuevaPassword, int codigoEmpleado) {
+       try {
+            ConexionBD.cargarDriver();
+            Connection connection = ConexionBD.conectar();
+            Statement sentencia = connection.createStatement();
+            sentencia.executeUpdate("update empleados set e_password=" + "'"+nuevaPassword+"'"+ " where e_codigo=" + codigoEmpleado);
+            connection.close();
+            sentencia.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
-    
 
-    
 }

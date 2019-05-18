@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface EmpleadoDAO {
     List<Empleado> leerEmpleado();
-    void actualizarEmpleados(List<Empleado> listEmpleado);
+    void actualizarEmpleados( String nuevaPassword,  int codigoEmpleado);
     
     
 }

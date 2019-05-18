@@ -5,14 +5,20 @@
  */
 package producto.dao;
 
+import Conexion.ConexionBD;
 import Empleado.control.GestionEmpleado;
 import producto.control.GestionPedidos;
 import java.io.*;
 import java.nio.file.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.*;
 import java.util.*;
 import producto.dominio.Producto;
 import util.Colors;
+
 /**
  *
  * @author Marta_08
@@ -30,77 +36,50 @@ public class ProductoDAOImp implements ProductoDAO {
     @Override
     public List<Producto> leerProducto() {
         List<Producto> productos = new ArrayList<>();
-        NumberFormat formatoNumero = NumberFormat.getInstance(Locale.CHINA);
-        Number numero;
-        String lineDatos;
-        try (BufferedReader archivo = Files.newBufferedReader(Paths.get(archivoProducto))) {
-            while (archivo.readLine() != null) {
-                archivo.readLine();
-                lineDatos = archivo.readLine().trim();
-                numero = formatoNumero.parse(lineDatos);
-                int codigo = numero.intValue();
-                archivo.readLine();
-                lineDatos = archivo.readLine().trim();
-                String nombre = lineDatos;
-                archivo.readLine();
-                lineDatos = archivo.readLine().trim();
-                String descripcion = lineDatos;
-                archivo.readLine();
-                lineDatos = archivo.readLine().trim();
-                numero = formatoNumero.parse(lineDatos);
-                double precio = numero.doubleValue();
-                Producto pro = new Producto(codigo, nombre, descripcion, precio);
+        try {
+
+            ConexionBD.cargarDriver();
+            Connection connection = ConexionBD.conectar();
+            System.out.println("-----TABLA PRODUCTO -------");
+            Statement sentenciaProducto = connection.createStatement();
+            ResultSet resultadoProducto = sentenciaProducto.executeQuery("select * FROM productos");
+            while (resultadoProducto.next()) {
+                String nombreProducto = resultadoProducto.getString("p_nombre");
+                String descripcionProducto = resultadoProducto.getString("p_descripcion");
+                int codigoProducto = resultadoProducto.getInt("p_codigo");
+                double precioProducto = resultadoProducto.getDouble("p_precio");
+                Producto pro = new Producto(codigoProducto, nombreProducto, descripcionProducto, precioProducto);
                 productos.add(pro);
             }
-        } catch (ParseException e) {
-            System.out.println(Colors.RED+"Formato erroneo ficero"+Colors.BLACK);
-        } catch (IOException ex) {
-            System.out.println(Colors.RED+"Erro en archivo"+Colors.BLACK);
+
+            sentenciaProducto.close();
+            resultadoProducto.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+
+        
         return productos;
 
     }
 
     @Override
-    public void actualizarProducto(List<Producto> listProductos) {
-        File fichero = new File(archivoProducto);
-        fichero.delete();
+        public void actualizarNombreProducto(String nuevoNombre, int codigoProducto) {
         try {
-            fichero.createNewFile();
-        } catch (IOException ex) {
-            System.out.println(Colors.RED+"Erros en fichero"+Colors.BLACK);;
-        }
-
-        try (BufferedWriter salida = Files.newBufferedWriter(
-                Paths.get(archivoProducto), StandardOpenOption.WRITE)) {
-            for (Producto producto : listProductos) {
-                salida.write("[producto]");
-                salida.newLine();
-                salida.write("[codigo]");
-                salida.newLine();
-                salida.write(String.valueOf(producto.getProducto_codigo()));
-                salida.newLine();
-                salida.write("[nombre]");
-                salida.newLine();
-                salida.write(producto.getProducto_nombre());
-                salida.newLine();
-                salida.write("[descripcion]");
-                salida.newLine();
-                salida.write(producto.getProducto_descripcion());
-                salida.newLine();
-                salida.write("[precio]");
-                salida.newLine();
-                salida.write(String.valueOf(producto.getPrec()));
-                salida.newLine();
-            }
-
-        } catch (IOException ex) {
-            System.out.println("No se ha podido escribir en el archivo");
+            ConexionBD.cargarDriver();
+            Connection connection = ConexionBD.conectar();
+            Statement sentencia = connection.createStatement();
+            sentencia.executeUpdate("update productos set p_nombre=" + "'"+nuevoNombre +"'"+ " where p_codigo=" + codigoProducto);
+            connection.close();
+            sentencia.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public void escribirFactura(List<Producto> factura) {
+        public void escribirFactura(List<Producto> factura) {
         File fichero = new File(archivoFactura);
         fichero.delete();
         try {
@@ -133,9 +112,18 @@ public class ProductoDAOImp implements ProductoDAO {
             System.out.println(Colors.RED+"No se ha podido escribir en el archivo"+ Colors.BLACK);
         }
     }
+
+    @Override
+    public void actualizarPrecioProducto(double nuevoPrecio, int codigoProducto) {
+       try {
+            ConexionBD.cargarDriver();
+            Connection connection = ConexionBD.conectar();
+            Statement sentencia = connection.createStatement();
+            sentencia.executeUpdate("update productos set p_precio=" + nuevoPrecio + " where p_codigo=" + codigoProducto);
+            sentencia.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
-
-    
-   
-
-
+    }

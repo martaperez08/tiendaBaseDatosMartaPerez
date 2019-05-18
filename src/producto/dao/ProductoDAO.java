@@ -14,7 +14,8 @@ import producto.dominio.Producto;
  */
 public interface ProductoDAO {
      List<Producto> leerProducto();
-     void actualizarProducto(List<Producto> listProductos);
+     void actualizarNombreProducto(String nombre, int productoCodigo);
+     void actualizarPrecioProducto(double precio, int productoCodigo);
      void escribirFactura(List<Producto> factura);
     
 }

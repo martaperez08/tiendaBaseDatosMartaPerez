@@ -111,7 +111,7 @@ public class GestionPedidos {
         } while (existeProducto == true);
 
         productosList.get(posicionProducto).setProducto_nombre(nuevoNombre);
-        productoDAOImp.actualizarProducto(productosList);
+        productoDAOImp.actualizarNombreProducto(nuevoNombre,productosList.get(posicionProducto).getProducto_codigo());
     }
 
     public static void modificarPrecioProducto(int poscionProducto) {
@@ -132,7 +132,7 @@ public class GestionPedidos {
         } while (formatoOK == false);
 
         productosList.get(poscionProducto).setPrec(nuevoPrecio);
-        productoDAOImp.actualizarProducto(productosList);
+        productoDAOImp.actualizarPrecioProducto(nuevoPrecio, productosList.get(poscionProducto).getProducto_codigo());
     }
 
     public static void modificarCodigoProducto(int posicionProducto) {
@@ -166,7 +166,7 @@ public class GestionPedidos {
         } while (existeProducto == true);
 
         productosList.get(posicionProducto).setProducto_codigo(codigoNuevo);
-        productoDAOImp.actualizarProducto(productosList);
+        //productoDAOImp.actualizarNombreProducto(productosList);
     }
 
     public static int opcionMenuModificarProducto() {

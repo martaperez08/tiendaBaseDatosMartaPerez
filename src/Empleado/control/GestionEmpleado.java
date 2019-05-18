@@ -111,6 +111,6 @@ public class GestionEmpleado  {
             }
 
         }
-        empleadoDAOImp.actualizarEmpleados(listEmpleados);
+        empleadoDAOImp.actualizarEmpleados(nuevaPassword, codigoEmple);
     }
 }
