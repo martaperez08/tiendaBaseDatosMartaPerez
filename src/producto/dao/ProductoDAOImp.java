@@ -25,11 +25,11 @@ import util.Colors;
  */
 public class ProductoDAOImp implements ProductoDAO {
 
-    private final String archivoProducto;
+   
     private final String archivoFactura;
 
     public ProductoDAOImp() {
-        this.archivoProducto = "Productos.txt";
+        
         this.archivoFactura = "Factura.txt";
     }
 
@@ -40,7 +40,6 @@ public class ProductoDAOImp implements ProductoDAO {
 
             ConexionBD.cargarDriver();
             Connection connection = ConexionBD.conectar();
-            System.out.println("-----TABLA PRODUCTO -------");
             Statement sentenciaProducto = connection.createStatement();
             ResultSet resultadoProducto = sentenciaProducto.executeQuery("select * FROM productos");
             while (resultadoProducto.next()) {
@@ -97,7 +96,7 @@ public class ProductoDAOImp implements ProductoDAO {
                 salida.newLine();
                 salida.write("Nombre :  " + producto.getProducto_nombre());
                 salida.newLine();
-                salida.write(" Descripcion:  " + producto.getProducto_descripcion());
+                salida.write("Descripcion:  " + producto.getProducto_descripcion());
                 salida.newLine();
                 salida.write("Precio:  " + String.valueOf(producto.getPrec()));
                 salida.newLine();
@@ -120,6 +119,20 @@ public class ProductoDAOImp implements ProductoDAO {
             Connection connection = ConexionBD.conectar();
             Statement sentencia = connection.createStatement();
             sentencia.executeUpdate("update productos set p_precio=" + nuevoPrecio + " where p_codigo=" + codigoProducto);
+            sentencia.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void actualizarCodigoProducto(int nuevoCodigo, int productoCdigo) {
+          try {
+            ConexionBD.cargarDriver();
+            Connection connection = ConexionBD.conectar();
+            Statement sentencia = connection.createStatement();
+            sentencia.executeUpdate("update productos set p_codigo=" +nuevoCodigo + " where p_codigo=" + productoCdigo);
             sentencia.close();
             connection.close();
         } catch (SQLException ex) {

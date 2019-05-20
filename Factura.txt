@@ -1,9 +1,15 @@
 ----------------------------------------
-Codigo:   111
-Nombre :  Gygabyte b4
- Descripcion:  Placa base de GIGABYTE serie 400 con tecnologia AMD StoreMI
-Precio:  60.99
+Codigo:   222
+Nombre :  marta
+Descripcion:  Placa base GIGABYTE serie 400 con tecnología AMD
+StoreMI
+Precio:  65.0
+Codigo:   444
+Nombre :  Lenovo Ideapad 530S
+Descripcion:  Ordenador portátil con Intel Core i5, 8GB RAM,
+256GB SSD
+Precio:  599.0
 ----------------------------------------
 
-El precio total de la factura es de : 60.99
-Atendio por: Mario
+El precio total de la factura es de : 664.0
+Atendio por: Sara

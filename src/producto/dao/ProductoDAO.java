@@ -16,6 +16,7 @@ public interface ProductoDAO {
      List<Producto> leerProducto();
      void actualizarNombreProducto(String nombre, int productoCodigo);
      void actualizarPrecioProducto(double precio, int productoCodigo);
+     void actualizarCodigoProducto(int nuevoCodigo,  int productoCdigo);
      void escribirFactura(List<Producto> factura);
     
 }

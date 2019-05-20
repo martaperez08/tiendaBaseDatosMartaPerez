@@ -165,8 +165,9 @@ public class GestionPedidos {
             }
         } while (existeProducto == true);
 
+        
+        productoDAOImp.actualizarCodigoProducto(codigoNuevo, productosList.get(posicionProducto).getProducto_codigo());
         productosList.get(posicionProducto).setProducto_codigo(codigoNuevo);
-        //productoDAOImp.actualizarNombreProducto(productosList);
     }
 
     public static int opcionMenuModificarProducto() {
